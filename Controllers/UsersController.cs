@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PPChat.Models;
 using PPChat.Services;
+using PPChat.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace PPChat.Controllers {
     public class UsersController : ControllerBase {
 
         private readonly UserService _userService;
+        private readonly IPPChatSessionSettings _sessionSettings;
 
-        public UsersController(UserService userService)
+        public UsersController(UserService userService, IPPChatSessionSettings sessionSettings)
         {
             _userService = userService;
+            _sessionSettings = sessionSettings;
         }
 
         [HttpGet]
@@ -33,12 +36,28 @@ namespace PPChat.Controllers {
             return user;
         }
 
-        [HttpPost]
+        [HttpPost("Create")]
         public ActionResult<User> Create(User user)
         {
             _userService.Create(user);
 
             return CreatedAtRoute("GetUser", new { id = user.Id.ToString() }, user);
+        }
+
+        [HttpPost("Register")]
+        public User Register(User user)
+        {
+            return _userService.Create(user);
+        }
+
+        [HttpPost("Login")]
+        public User Login(User user)
+        {
+            var queryResult = _userService.GetByUsername(user.Name);
+
+            if (queryResult != null && queryResult.Password == user.Password)
+                HttpContext.Session.Set<User>(_sessionSettings.Name, queryResult);
+            return HttpContext.Session.Get<User>(_sessionSettings.Name);
         }
 
         [HttpPut("{id:length(24)}")]

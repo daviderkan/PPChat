@@ -1,0 +1,20 @@
+
+<div class="main_container">
+
+  <ul class="msg_container" *ngFor="let msg of messages$ | async">
+    <li class="msg">
+      <p>{{msg.author + ': ' + msg.content}}</p>
+      <p class="msg_time">{{msg.creationTime}}</p>
+    </li>
+  </ul>
+
+  <form id="send" [formGroup]="sendMsgForm" (ngSubmit)="onSubmit(sendMsgForm.value)">
+    <div>
+      <input type="text" formControlName="msg">
+    </div>
+    <button class="button" type="submit">Send</button>
+  </form>
+
+</div>
+
+

@@ -1,0 +1,32 @@
+
+.main_container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.msg_container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: flex-end;
+  list-style-type: none;
+}
+
+.msg {
+  display:flex;
+  flex-direction:column;
+  flex-wrap:nowrap;
+  justify-content: flex-start;
+
+}
+
+.msg_time {
+  align-self: flex-end;
+}
+
+/*#send {
+
+}*/

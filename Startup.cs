@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using PPChat.Models;
+using PPChat.Hubs;
 using PPChat.Services;
+using PPChat.Settings;
 using System;
 
-namespace PPChat {
+namespace PPChat
+{
     public class Startup {
         public Startup(IConfiguration configuration)
         {
@@ -30,7 +32,7 @@ namespace PPChat {
 
             //services.AddScoped<UserService>();
             services.AddSingleton<UserService>();
-
+            services.AddSingleton<MessageService>();
 
             services.Configure<PPChatSessionSettings>(
                 Configuration.GetSection(nameof(PPChatSessionSettings)));
@@ -48,6 +50,8 @@ namespace PPChat {
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSignalR();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -84,6 +88,11 @@ namespace PPChat {
             app.UseSpaStaticFiles();
 
             app.UseCors("CorsPolicy");
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chatHub");
+            });
 
             app.UseMvc(routes =>
             {

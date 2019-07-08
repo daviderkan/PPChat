@@ -1,0 +1,6 @@
+<ul class="menu">
+  <li *ngIf="(loggedIn$ | async)"><a [routerLink]="'/'">Home</a></li>
+  <li *ngIf="!(loggedIn$ | async)"><a [routerLink]="'/login'">Login</a></li>
+  <li *ngIf="!(loggedIn$ | async)"><a [routerLink]="'/register'">Register</a></li>
+  <li *ngIf="(loggedIn$ | async)"><a (click)="logout()">Logout</a></li>
+</ul>

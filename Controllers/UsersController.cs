@@ -6,8 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PPChat.Settings;
 
-namespace PPChat.Controllers {
+namespace PPChat.Controllers
+{
 
     [Route("api/[controller]")]
     [ApiController]
@@ -23,6 +25,19 @@ namespace PPChat.Controllers {
         }
 
         [HttpGet]
+        public ActionResult<List<User>> Get() => _userService.Get();
+
+        [HttpPost("Register")]
+        public User Register(User user)
+        {
+            return _userService.Create(user);
+        }
+
+        /*
+         * From tutorial
+         */
+
+        /*[HttpGet]
         public ActionResult<List<User>> Get() => _userService.Get();
 
         [HttpGet("{id:length(24)}", Name = "GetUser")]
@@ -44,21 +59,6 @@ namespace PPChat.Controllers {
             return CreatedAtRoute("GetUser", new { id = user.Id.ToString() }, user);
         }
 
-        [HttpPost("Register")]
-        public User Register(User user)
-        {
-            return _userService.Create(user);
-        }
-
-        [HttpPost("Login")]
-        public User Login(User user)
-        {
-            var queryResult = _userService.GetByUsername(user.Name);
-
-            if (queryResult != null && queryResult.Password == user.Password)
-                HttpContext.Session.Set<User>(_sessionSettings.Name, queryResult);
-            return HttpContext.Session.Get<User>(_sessionSettings.Name);
-        }
 
         [HttpPut("{id:length(24)}")]
         public IActionResult Update(string id, User userIn)
@@ -88,6 +88,6 @@ namespace PPChat.Controllers {
             _userService.Remove(user.Id);
 
             return NoContent();
-        }
+        }*/
     }
 }

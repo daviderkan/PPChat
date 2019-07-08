@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using PPChat.Models;
+using PPChat.Settings;
 
-namespace PPChat.Services {
+namespace PPChat.Services
+{
     public class UserService {
         private readonly IMongoCollection<User> _users;
 
@@ -26,7 +28,7 @@ namespace PPChat.Services {
         public User Create(User user)
         {
             _users.InsertOne(user);
-            return user;
+            return GetByUsername(user.Name);
         }
 
         public void Update(string id, User userIn) => _users.ReplaceOne(user => user.Id == id, userIn);
